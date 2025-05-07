@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.custom-arrow::before {
+  content: "";
+  display: block;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAQCAYAAAAvf+5AAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABMSURBVHgB3dLBCQAgDANAcQJHcTQ3qJs6QkeIFQpi0frWQB6FI68GAFnKUgpeBDTMkAcr1nyPSzxZc6fdGpm1+gRSyFekcLxZc5GkA1JCBQ0g0YWBAAAAAElFTkSuQmCC");
+  width: 9.71px;
+  height: 16px;
+  opacity: 1;
+  transform: rotate(-180deg);
+  margin-left: 60%;
+}

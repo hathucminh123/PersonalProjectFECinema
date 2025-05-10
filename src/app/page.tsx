@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { HeaderNavigation } from "@/components/HeaderNavigation";
+// import { HeaderNavigation } from "@/components/HeaderNavigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-full">
-      <HeaderNavigation />
+      {/* <HeaderNavigation /> */}
 
       <main className="min-h-[100vh]">
         <div className="relative pt-6 pb-12">

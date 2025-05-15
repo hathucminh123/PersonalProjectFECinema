@@ -1,6 +1,9 @@
 "use client";
+
 import Image from "next/image";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setMovie } from "@/Redux/slices/bookingSlice";
 
 const movies = [
   {
@@ -8,27 +11,42 @@ const movies = [
     title: "Thám Tử Kiên: Kỳ Án Không Dấu",
     poster:
       "https://cdn.galaxycine.vn/media/2025/5/5/the-young-girls-of-rochefort--2_1746437845040.jpg",
+    age: "T13",
   },
   {
     id: 2,
     title: "Lật Mặt 8: Vòng Tay Nắng",
     poster:
       "https://cdn.galaxycine.vn/media/2025/4/28/tham-tu-kien-2_1745832748529.jpg",
+    age: "T16",
   },
   {
     id: 3,
     title: "Địa Đạo: Mặt Trời Trong Bóng Tối",
     poster:
       "https://cdn.galaxycine.vn/media/2025/4/28/tham-tu-kien-2_1745832748529.jpg",
+    age: "T18",
   },
 ];
 
 export default function MovieSelector() {
   const [selectedMovieId, setSelectedMovieId] = useState<number | null>(3);
   const [isExpanded, setIsExpanded] = useState(true);
+  const dispatch = useDispatch();
+
+  const handleSelectMovie = (movie: typeof movies[0]) => {
+    setSelectedMovieId(movie.id);
+    dispatch(
+      setMovie({
+        id: movie.id.toString(),
+        title: movie.title,
+        age: movie.age,
+        poster: movie.poster,
+      })
+    );
+  };
 
   return (
-    
     <div className="p-4 bg-white rounded shadow-md">
       {/* Accordion Header */}
       <div
@@ -65,7 +83,7 @@ export default function MovieSelector() {
           {movies.map((movie) => (
             <div
               key={movie.id}
-              onClick={() => setSelectedMovieId(movie.id)}
+              onClick={() => handleSelectMovie(movie)}
               className={`relative rounded overflow-hidden cursor-pointer group transition-all duration-300 border-2 ${
                 selectedMovieId === movie.id
                   ? "border-blue-500"

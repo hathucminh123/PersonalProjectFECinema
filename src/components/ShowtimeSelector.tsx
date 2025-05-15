@@ -2,13 +2,18 @@
 
 import React, { useState } from "react";
 import Slider from "react-slick";
+import { useDispatch } from "react-redux";
+import { setShowtime, setCinema, setDate } from "@/Redux/slices/bookingSlice"; // ✅ THÊM setDate
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 export default function ShowtimeSelector() {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [selectedTime, setSelectedTime] = useState<string | null>("21:30");
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedCinema, setSelectedCinema] = useState("Galaxy Đà Nẵng");
   const [activeDateIndex, setActiveDateIndex] = useState(0);
+  const dispatch = useDispatch();
 
   const dates = [
     { label: "Hôm Nay", date: "08/05" },
@@ -21,6 +26,22 @@ export default function ShowtimeSelector() {
   ];
 
   const times = ["19:45", "20:30", "21:30", "22:15", "23:00"];
+
+  const handleTimeSelect = (time: string) => {
+    setSelectedTime(time);
+    dispatch(setShowtime(time));
+  };
+
+  const handleCinemaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const cinema = e.target.value;
+    setSelectedCinema(cinema);
+    dispatch(setCinema(cinema));
+  };
+
+  const handleDateSelect = (index: number) => {
+    setActiveDateIndex(index);
+    dispatch(setDate(dates[index].date)); // ✅ Dispatch ngày chiếu vào Redux
+  };
 
   const sliderSettings = {
     slidesToShow: 5,
@@ -37,7 +58,6 @@ export default function ShowtimeSelector() {
 
   return (
     <div className="mb-8 shadow-md rounded">
-      {/* Header */}
       <div className="bg-white text-[rgba(0,0,0,0.87)] relative border-0 border-solid border-[rgba(0,0,0,0.12)]">
         <div className="flex items-center justify-center relative min-h-[48px] px-4">
           <div className="flex flex-grow my-3">
@@ -65,21 +85,20 @@ export default function ShowtimeSelector() {
         </div>
       </div>
 
-      {/* Content */}
       {isExpanded && (
         <div className="p-4 bg-white">
-          {/* Ngày + dropdown */}
+          {/* Ngày + Dropdown */}
           <div className="flex items-center justify-between mb-4">
             <div className="w-full max-w-[80%] overflow-hidden">
               <Slider {...sliderSettings}>
                 {dates.map((d, idx) => (
                   <div key={idx} className="px-1">
                     <button
-                      onClick={() => setActiveDateIndex(idx)}
+                      onClick={() => handleDateSelect(idx)} // ✅ dùng hàm riêng
                       className={`w-[80px] h-[65px] text-sm flex flex-col justify-center items-center rounded-[5px] ${
                         activeDateIndex === idx
                           ? "bg-[#034ea2] text-white"
-                          : "bg-white text-[#333]"
+                          : "bg-white text-[#333] border"
                       }`}
                     >
                       <span>{d.label}</span>
@@ -89,22 +108,26 @@ export default function ShowtimeSelector() {
                 ))}
               </Slider>
             </div>
-            <select className="border px-3 py-1 rounded text-sm ml-4">
-              <option>Tất cả các rạp</option>
+            <select
+              className="border px-3 py-1 rounded text-sm ml-4"
+              value={selectedCinema}
+              onChange={handleCinemaChange}
+            >
               <option>Galaxy Đà Nẵng</option>
               <option>Galaxy Nguyễn Du</option>
+              <option>Galaxy Mipec Long Biên</option>
             </select>
           </div>
 
-          {/* Định dạng + suất */}
+          {/* Suất chiếu */}
           <div>
-            <p className="font-medium mb-2">Galaxy Đà Nẵng</p>
+            <p className="font-medium mb-2">{selectedCinema}</p>
             <p className="text-sm text-gray-500 mb-2">2D Phụ Đề</p>
             <div className="flex flex-wrap gap-2">
               {times.map((time) => (
                 <button
                   key={time}
-                  onClick={() => setSelectedTime(time)}
+                  onClick={() => handleTimeSelect(time)}
                   className={`px-4 py-1 rounded border text-sm ${
                     selectedTime === time
                       ? "bg-blue-600 text-white"
@@ -124,11 +147,11 @@ export default function ShowtimeSelector() {
   );
 }
 
-// Arrows for Slider
+// Arrows
 function CustomPrevArrow({ onClick }: { onClick?: () => void }) {
   return (
     <button
-      className="z-[500] h-[60px] w-[60px] rounded-full bg-transparent absolute text-[#333333] top-[5%] left-[-30px] p-0 cursor-pointer"
+      className="z-[500] h-[60px] w-[60px] rounded-full bg-transparent absolute text-[#333333] top-[5%] left-[10px] p-0 cursor-pointer"
       onClick={onClick}
     >
       <svg width={14} height={14} viewBox="0 0 320 512" fill="currentColor">

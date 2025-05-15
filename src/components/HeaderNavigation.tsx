@@ -1,9 +1,22 @@
+"use client";
 import { CardMovie } from "@/components/CardMovie";
+import LoginModal from "@/components/LoginModal";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 export const HeaderNavigation: React.FC = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isLogin, setIsLogin] = React.useState(false);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  // const handleLogin = () => {
+  //   setIsLogin(true);
+  // }
+
   return (
     <header className="pt-3 pb-3 bg-white shadow-md min-h-[80px] w-full block">
       <div className="max-w-[1200px] px-0 mx-auto">
@@ -170,15 +183,132 @@ export const HeaderNavigation: React.FC = () => {
                 </svg>
               </Link>
             </div>
-            <Link
-              href={""}
-              className="duration-300 transition-all text-[#777] capitalize text-sm cursor-pointer ml-2"
-            >
-              Đăng nhập
-            </Link>
+            {isLogin ? (
+              <div className="md:px-2 py-4 relative items-center text-left md:cursor-pointer group transition-all duration-500 ease-in-out md:flex hidden">
+                <div className="w-[40px] h-[40px] flex items-center justify-center text-center rounded-full bg-[#D0D0D0] border-4 border-solid border-[#E9E9E2] flex-none mr-4">
+                  <Image
+                    src="https://www.galaxycine.vn/_next/static/media/user_default.b1a2ce07.png"
+                    alt=""
+                    height={40}
+                    width={40}
+                    className="ease-in-out duration-500 blur-0 filter object-cover rounded-full transform scale-105 w-full h-full max-w-full block align-middle"
+                  />
+                </div>
+                <div className="flex flex-col flex-auto">
+                  <div className="flex items-center justify-center gap-[6px]">
+                    <Image
+                      src="https://cdn.galaxycine.vn/media/2020/5/15/s_1589511977688.png"
+                      width={20}
+                      height={30}
+                      alt=""
+                      className="inline-block w-[20px] h-[30px] align-middle"
+                    />
+                    <p className="flex-auto md:flex hidden flex-col text-sm font-bold not-italic justify-start items-start md:pr-0 group-hover:text-orange-500 transition-all duration-500 ease-in-out capitalize">
+                      Ha thuc Minh
+                      <span className="block text-xs font-light not-italic">
+                        Star
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute left-0 w-full min-w-[150px] max-w-[220px] top-15 hidden md:group-hover:block z-[500] transition-all duration-300 ease-in-out">
+                  <div className="shadow-xl text-center bg-white border-white border-solid border rounded-lg py-2">
+                    <ul className="flex flex-col">
+                      <li>
+                        <Link
+                          href="#"
+                          className="flex items-center gap-2 text-sm text-black py-2 px-4 hover:text-[#f26b38] hover:bg-[#fb770b1a] transition-all duration-200 capitalize"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4 text-black"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 11c.828 0 1.5-.672 1.5-1.5S12.828 8 12 8s-1.5.672-1.5 1.5S11.172 11 12 11z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19.5 21v-2a4.5 4.5 0 00-4.5-4.5h-6A4.5 4.5 0 004.5 19v2"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 3C8.134 3 5 6.134 5 10c0 1.654.666 3.154 1.75 4.25"
+                            />
+                          </svg>
+                          Tài Khoản
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="#"
+                          className="flex items-center gap-2 text-sm text-black py-2 px-4 hover:text-[#f26b38] hover:bg-[#fb770b1a] transition-all duration-200 capitalize"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4 text-black"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                          Lịch Sử
+                        </Link>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => console.log("Đăng xuất")}
+                          className="w-full text-left flex items-center gap-2 text-sm text-black py-2 px-4 hover:text-[#f26b38] hover:bg-[#fb770b1a] transition-all duration-200 capitalize"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4 text-black"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"
+                            />
+                          </svg>
+                          Đăng Xuất
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link
+                onClick={handleOpen}
+                href={"#"}
+                className="duration-300 transition-all text-[#777] capitalize text-sm cursor-pointer ml-2"
+              >
+                Đăng nhập
+              </Link>
+            )}
           </div>
         </nav>
       </div>
+      {isOpen && (
+        <LoginModal setIsLogin={setIsLogin} onClose={() => setIsOpen(false)} />
+      )}
     </header>
   );
 };

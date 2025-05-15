@@ -1,8 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
 import { HeaderNavigation } from "@/components/HeaderNavigation";
 import StoreProvider from "@/app/StoreProvider";
+import { Providers } from "@/components/Providers"; // 👈 dùng Providers mới tạo
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,14 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StoreProvider>
-          <HeaderNavigation />
-
-          {children}
-          <div id="portal-root"></div>
+          <Providers>
+            <HeaderNavigation />
+            {children}
+            <div id="portal-root" />
+          </Providers>
         </StoreProvider>
       </body>
     </html>

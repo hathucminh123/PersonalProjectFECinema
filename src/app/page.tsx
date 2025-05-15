@@ -11,6 +11,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { MovieCard } from "@/components/MovieCard";
+import { useQuery } from "@tanstack/react-query";
+import { GetMoviesService } from "@/services/Movies/GetAllMovies";
 
 export default function Home() {
   const [selectedMovie, setSelectedMovie] = useState<string | null>(null);
@@ -21,7 +23,7 @@ export default function Home() {
     null | "movie" | "cinema" | "date" | "time"
   >(null);
 
-  const movies = ["Thám tử lừng danh", "Avengers", "Oppenheimer"];
+  // const movies = ["Thám tử lừng danh", "Avengers", "Oppenheimer"];
   const cinemas: { [key: string]: string[] } = {
     "Thám tử lừng danh": ["CGV Nguyễn Trãi", "Lotte Landmark"],
     Avengers: ["BHD Bitexco", "CGV Vincom"],
@@ -32,6 +34,14 @@ export default function Home() {
 
   const canBuyTicket =
     selectedMovie && selectedCinema && selectedDate && selectedTime;
+
+  const { data } = useQuery({
+    queryKey: ["Movies"],
+    queryFn: ({ signal }) => GetMoviesService({ signal }),
+  });
+
+  console.log("data", data);
+  const moviess = data?.movies || [];
 
   return (
     <div className="w-full h-full">
@@ -107,20 +117,20 @@ export default function Home() {
                 </div>
                 {openDropdown === "movie" && (
                   <div className="absolute bottom-[51px] left-[-1px] bg-white border max-h-[300px] overflow-auto z-[9] w-max rounded shadow">
-                    {movies.map((movie) => (
+                    {moviess.map((movie) => (
                       <span
-                        key={movie}
+                        key={movie._id}
                         className="py-2 px-[0.925rem] block cursor-pointer hover:bg-[#f58020] hover:text-white"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedMovie(movie);
+                          setSelectedMovie(movie.title);
                           setSelectedCinema(null);
                           setSelectedDate(null);
                           setSelectedTime(null);
                           setOpenDropdown(null);
                         }}
                       >
-                        {movie}
+                        {movie.title}
                       </span>
                     ))}
                   </div>
@@ -321,10 +331,14 @@ export default function Home() {
           </div>
           <div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6 mb-10">
-              <MovieCard />
+              {moviess.map((movie) => (
+                <MovieCard key={movie._id} data={movie} />
+              ))}
+
+              {/* <MovieCard />
               <MovieCard/>
               <MovieCard/>
-              <MovieCard/>
+              <MovieCard/> */}
             </div>
           </div>
         </div>

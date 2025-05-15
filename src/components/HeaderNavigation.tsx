@@ -1,9 +1,11 @@
 "use client";
 import { CardMovie } from "@/components/CardMovie";
 import LoginModal from "@/components/LoginModal";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { GetMoviesService } from "@/services/Movies/GetAllMovies";
 
 export const HeaderNavigation: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -16,6 +18,16 @@ export const HeaderNavigation: React.FC = () => {
   // const handleLogin = () => {
   //   setIsLogin(true);
   // }
+
+  const { data } = useQuery({
+    queryKey: ["Movies"],
+    queryFn: ({ signal }) => GetMoviesService({ signal }),
+
+  });
+
+   console.log("data",data);
+  const movies = data?.movies || [];
+  console.log(movies);
 
   return (
     <header className="pt-3 pb-3 bg-white shadow-md min-h-[80px] w-full block">
@@ -80,9 +92,16 @@ export const HeaderNavigation: React.FC = () => {
                           </Link>
                         </div>
                         <ul className="flex gap-7 p-0 m-0 list-none justify-between">
-                          <CardMovie />
-                          <CardMovie />
-                          <CardMovie />
+                          {movies?.slice(0, 6).map((movie) => (
+                            <CardMovie
+                              key={movie._id}
+                              title={movie.title}
+                              imageUrl={movie.posterUrl}
+                              // ageType={movie. || "T13"} // fallback nếu thiếu
+                              // rating={movie. || 8.5}
+                              slug={movie._id}
+                            />
+                          ))}
                         </ul>
                       </div>
 
@@ -98,9 +117,9 @@ export const HeaderNavigation: React.FC = () => {
                           </Link>
                         </div>
                         <ul className="flex gap-7 p-0 m-0 list-none justify-between">
+                          {/* <CardMovie />
                           <CardMovie />
-                          <CardMovie />
-                          <CardMovie />
+                          <CardMovie /> */}
                         </ul>
                       </div>
                     </div>
